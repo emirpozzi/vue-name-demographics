@@ -1,15 +1,16 @@
 <template>
-  <label for="input">Write a name: </label>
-  <input v-model="input" type="text" />
-  <button @click="getStatistics(input)">Get Stats</button>
-  <p>Name is: {{ this.name }}</p>
-  <p>Age is: {{ this.age }}</p>
-  <p>Gender is: {{ this.gender }}</p>
-  <ol>
+  <header class="container">Name demographics</header>
+  <label for="input">Write a name</label>
+  <input @change="getStatistics(input)" v-model="input" type="text" />
+  <p v-if="this.name">NAME - {{ this.name }}</p>
+  <p v-if="this.age">AGE - {{ this.age }}</p>
+  <p v-if="this.gender">GENDER - {{ this.gender }}</p>
+  {{ this.gender && "COUNTRIES" }}
+  <ul>
     <li v-for="country in countryList" :key="country.country_id">
       {{ country.country_id }} - {{ country.probability }}
     </li>
-  </ol>
+  </ul>
 </template>
 
 <script lang="ts">
@@ -41,8 +42,16 @@ export default defineComponent({
     async getNationality(name: string) {
       const result = await fetch(`https://api.nationalize.io/?name=${name}`);
       const data = await result.json();
-      this.countryList = data.country;
-      console.log(data);
+
+      const formatted = data.country.map(
+        (country: { country_id: string; probability: number }) => {
+          return {
+            country_id: country.country_id,
+            probability: Math.round(country.probability * 10000) / 100 + "%",
+          };
+        }
+      );
+      this.countryList = formatted;
     },
     async getStatistics(name: string) {
       this.name = name;
@@ -53,3 +62,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+ul {
+  list-style-type: none;
+}
+</style>
