@@ -2,23 +2,28 @@
   <header class="container">Name demographics</header>
   <label for="input">Write a name</label>
   <input @change="getStatistics(input)" v-model="input" type="text" />
-  <p v-if="this.name">NAME - {{ this.name }}</p>
-  <p v-if="this.age">AGE - {{ this.age }}</p>
-  <p v-if="this.gender">GENDER - {{ this.gender }}</p>
-  {{ this.gender && "COUNTRIES" }}
+
+  <div v-if="this.age">
+    <span class="label">AGE</span>
+    <div v-if="this.age">{{ this.age }}</div>
+  </div>
+  <p class="label" v-if="this.gender">GENDER</p>
+  {{ this.gender.toUpperCase() }}
+  <p class="label" v-if="this.countryList.length > 0">COUNTRIES</p>
   <ul>
     <li v-for="country in countryList" :key="country.country_id">
-      {{ country.country_id }} - {{ country.probability }}
+      <CountryItem :country="country" />
     </li>
   </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import CountryItem from "../components/CountryItem.vue";
 
 export default defineComponent({
   name: "HomeView",
-  components: {},
+  components: { CountryItem },
   data() {
     return {
       input: "",
@@ -55,6 +60,9 @@ export default defineComponent({
     },
     async getStatistics(name: string) {
       this.name = name;
+      this.age = 0;
+      this.countryList = [];
+      this.gender = "";
       this.getAge(name);
       this.getGender(name);
       this.getNationality(name);
@@ -66,5 +74,17 @@ export default defineComponent({
 <style>
 ul {
   list-style-type: none;
+  margin-top: 0px;
+}
+
+.label {
+  margin-bottom: 3px;
+  color: rgb(87, 61, 61);
+  font-size: 30px;
+}
+
+.fi {
+  width: 10px;
+  height: 10px;
 }
 </style>

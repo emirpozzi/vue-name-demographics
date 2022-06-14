@@ -3,11 +3,14 @@
 </template>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+
 body {
   background-color: bisque;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.5rem;
   text-align: center;
+  min-width: 526px;
 }
 input {
   width: 200px;
