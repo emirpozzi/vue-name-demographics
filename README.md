@@ -1,24 +1,21 @@
-# name-demographics
+# Name demographics
 
-## Project setup
+This simple Vue app allows to get average age, most likely gender and most likely nationality of a person given their first name.
+
+Based on public APIs:
+
+- [agify.io](https://agify.io/)
+- [genderize.io](https://genderize.io/)
+- [nationalize.io](https://nationalize.io/)
+
+## How to start
+
 ```
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).

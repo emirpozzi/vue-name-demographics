@@ -21,6 +21,7 @@
 </template>
 
 <script lang="ts">
+// TODO add url query for name
 import CountryItem from "@/components/CountryItem.vue";
 import { defineComponent } from "vue";
 import { getAge, getGender, getNationality } from "../../utils/api";
@@ -59,14 +60,12 @@ export default defineComponent({
       this.gender = "";
 
       if (this.cache.has(name)) {
-        console.log("HIT");
         const retrieved = this.cache.get(name);
 
         retrieved?.age && (this.age = retrieved?.age);
         retrieved?.gender && (this.gender = retrieved?.gender);
         retrieved?.nationality && (this.countryList = retrieved?.nationality);
       } else {
-        console.log("MISS");
         await Promise.all([
           this.getAge(name),
           this.getGender(name),
