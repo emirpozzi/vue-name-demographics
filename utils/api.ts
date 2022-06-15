@@ -1,4 +1,4 @@
-import { CountryProbability, CountryFormatted, Gender } from "../src/types";
+import { CountryProbability, Gender } from "../src/types";
 
 export async function getAge(name: string): Promise<number> {
   const result = await fetch(`https://api.agify.io/?name=${name}`);

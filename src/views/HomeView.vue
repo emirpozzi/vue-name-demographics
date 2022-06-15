@@ -10,9 +10,9 @@
   </div>
 
   <p v-if="this.gender" class="label">Gender</p>
-  {{ this.gender.toUpperCase() }}
+  {{ genderToUppercase }}
 
-  <p v-if="this.countryList.length > 0" class="label">Nationality</p>
+  <p v-if="hasCountries" class="label">Nationality</p>
   <ul>
     <li v-for="country in countryList" :key="country.country_id">
       <CountryItem :country="country" />
@@ -21,10 +21,9 @@
 </template>
 
 <script lang="ts">
-// TODO add types
 // TODO add caching
-import { defineComponent } from "vue";
 import CountryItem from "@/components/CountryItem.vue";
+import { defineComponent } from "vue";
 import { getAge, getGender, getNationality } from "../../utils/api";
 import { formatProbabilities } from "../../utils/format";
 import { CountryFormatted, Gender } from "@/types";
@@ -36,7 +35,6 @@ export default defineComponent({
     return {
       input: "" as string,
       age: 0 as number,
-      name: "" as string,
       gender: "" as Gender,
       countryList: [] as CountryFormatted[],
     };
@@ -56,14 +54,23 @@ export default defineComponent({
       this.countryList = formatted;
     },
     async getStatistics(name: string) {
-      this.name = name;
       this.age = 0;
       this.countryList = [];
       this.gender = "";
 
-      this.getAge(name);
-      this.getGender(name);
-      this.getNationality(name);
+      await Promise.all([
+        this.getAge(name),
+        this.getGender(name),
+        this.getNationality(name),
+      ]);
+    },
+  },
+  computed: {
+    hasCountries(): boolean {
+      return this.countryList.length > 0;
+    },
+    genderToUppercase(): string {
+      return this.gender.toUpperCase();
     },
   },
 });
