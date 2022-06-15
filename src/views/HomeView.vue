@@ -21,12 +21,11 @@
 </template>
 
 <script lang="ts">
-// TODO add caching
 import CountryItem from "@/components/CountryItem.vue";
 import { defineComponent } from "vue";
 import { getAge, getGender, getNationality } from "../../utils/api";
 import { formatProbabilities } from "../../utils/format";
-import { CountryFormatted, Gender } from "@/types";
+import { CountryFormatted, Gender, NameData } from "@/types";
 
 export default defineComponent({
   name: "HomeView",
@@ -35,8 +34,9 @@ export default defineComponent({
     return {
       input: "" as string,
       age: 0 as number,
-      gender: "" as Gender,
+      gender: "" as Gender | "",
       countryList: [] as CountryFormatted[],
+      cache: new Map<string, NameData>(),
     };
   },
   methods: {
@@ -58,11 +58,28 @@ export default defineComponent({
       this.countryList = [];
       this.gender = "";
 
-      await Promise.all([
-        this.getAge(name),
-        this.getGender(name),
-        this.getNationality(name),
-      ]);
+      if (this.cache.has(name)) {
+        console.log("HIT");
+        const retrieved = this.cache.get(name);
+
+        retrieved?.age && (this.age = retrieved?.age);
+        retrieved?.gender && (this.gender = retrieved?.gender);
+        retrieved?.nationality && (this.countryList = retrieved?.nationality);
+      } else {
+        console.log("MISS");
+        await Promise.all([
+          this.getAge(name),
+          this.getGender(name),
+          this.getNationality(name),
+        ]);
+        const nameData: NameData = {
+          age: this.age,
+          gender: this.gender,
+          nationality: this.countryList,
+        };
+
+        this.cache.set(name, nameData);
+      }
     },
   },
   computed: {

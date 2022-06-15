@@ -8,4 +8,10 @@ export interface CountryFormatted {
   probability: string;
 }
 
-export type Gender = "male" | "female" | "";
+export type Gender = "male" | "female";
+
+export interface NameData {
+  age: number;
+  gender: Gender | "";
+  nationality: CountryFormatted[];
+}
