@@ -7,6 +7,10 @@ const routes: Array<RouteRecordRaw> = [
     name: "home",
     component: HomeView,
   },
+  {
+    path: "/name=:nameid",
+    component: HomeView,
+  },
 ];
 
 const router = createRouter({

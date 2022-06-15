@@ -2,7 +2,7 @@
   <header class="container">Name demographics</header>
 
   <label for="input">Write a name</label>
-  <input @change="getStatistics(input)" v-model="input" type="text" />
+  <input @change="this.goTo()" v-model="input" type="text" />
 
   <div v-if="this.age">
     <span class="label">Age</span>
@@ -21,7 +21,6 @@
 </template>
 
 <script lang="ts">
-// TODO add url query for name
 import CountryItem from "@/components/CountryItem.vue";
 import { defineComponent } from "vue";
 import { getAge, getGender, getNationality } from "../../utils/api";
@@ -40,7 +39,15 @@ export default defineComponent({
       cache: new Map<string, NameData>(),
     };
   },
+  mounted() {
+    this.input = this.$route.params.nameid.toString();
+    this.getStatistics(this.input);
+  },
   methods: {
+    async goTo() {
+      this.$router.push(`/name=${this.input}`);
+      this.getStatistics(this.input);
+    },
     async getAge(name: string) {
       const age = await getAge(name);
       this.age = age;
