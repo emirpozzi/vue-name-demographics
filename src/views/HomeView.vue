@@ -21,6 +21,12 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import CountryItem from "../components/CountryItem.vue";
+import {
+  getAge,
+  getGender,
+  getNationality,
+  formatProbabilities,
+} from "../../utils/api";
 
 export default defineComponent({
   name: "HomeView",
@@ -36,27 +42,16 @@ export default defineComponent({
   },
   methods: {
     async getAge(name: string) {
-      const result = await fetch(`https://api.agify.io/?name=${name}`);
-      const data = await result.json();
-      this.age = data.age;
+      const age = await getAge(name);
+      this.age = age;
     },
     async getGender(name: string) {
-      const result = await fetch(`https://api.genderize.io/?name=${name}`);
-      const data = await result.json();
-      this.gender = data.gender;
+      const gender = await getGender(name);
+      this.gender = gender;
     },
     async getNationality(name: string) {
-      const result = await fetch(`https://api.nationalize.io/?name=${name}`);
-      const data = await result.json();
-
-      const formatted = data.country.map(
-        (country: { country_id: string; probability: number }) => {
-          return {
-            country_id: country.country_id,
-            probability: Math.round(country.probability * 10000) / 100 + "%",
-          };
-        }
-      );
+      const countryList = getNationality(name);
+      const formatted = formatProbabilities(countryList);
       this.countryList = formatted;
     },
     async getStatistics(name: string) {
