@@ -40,8 +40,10 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.input = this.$route.params.nameid.toString();
-    this.getStatistics(this.input);
+    if (this.$route.params.nameid) {
+      this.input = this.$route.params.nameid.toString();
+      this.getStatistics(this.input);
+    }
   },
   methods: {
     async goTo() {
