@@ -1,15 +1,16 @@
 <template>
   <header class="container">Name demographics</header>
+
   <label for="input">Write a name</label>
   <input @change="getStatistics(input)" v-model="input" type="text" />
 
   <div v-if="this.age">
-    <span class="label">AGE</span>
+    <span class="label">Age</span>
     <div v-if="this.age">{{ this.age }}</div>
   </div>
-  <p class="label" v-if="this.gender">GENDER</p>
+  <p class="label" v-if="this.gender">Gender</p>
   {{ this.gender.toUpperCase() }}
-  <p class="label" v-if="this.countryList.length > 0">COUNTRIES</p>
+  <p class="label" v-if="this.countryList.length > 0">Nationality</p>
   <ul>
     <li v-for="country in countryList" :key="country.country_id">
       <CountryItem :country="country" />
@@ -63,6 +64,7 @@ export default defineComponent({
       this.age = 0;
       this.countryList = [];
       this.gender = "";
+
       this.getAge(name);
       this.getGender(name);
       this.getNationality(name);
@@ -86,5 +88,11 @@ ul {
 .fi {
   width: 10px;
   height: 10px;
+}
+
+a {
+  font-size: 15px;
+  color: white;
+  display: inline-block;
 }
 </style>

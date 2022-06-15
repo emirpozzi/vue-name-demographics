@@ -10,7 +10,7 @@ body {
   font-family: "Poppins", sans-serif;
   font-size: 1.5rem;
   text-align: center;
-  min-width: 526px;
+  min-width: 550px;
 }
 input {
   width: 200px;

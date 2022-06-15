@@ -1,5 +1,5 @@
 <template>
-  <div class="container-country">
+  <div v-if="country.country_id" class="container-country">
     <country-flag class="country" :country="country.country_id" size="medium" />
     <span class="country-name">
       {{ countryFullName }} - {{ country.probability }}
