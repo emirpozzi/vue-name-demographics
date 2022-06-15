@@ -6,11 +6,13 @@
 
   <div v-if="this.age">
     <span class="label">Age</span>
-    <div v-if="this.age">{{ this.age }}</div>
+    <div>{{ this.age }}</div>
   </div>
-  <p class="label" v-if="this.gender">Gender</p>
+
+  <p v-if="this.gender" class="label">Gender</p>
   {{ this.gender.toUpperCase() }}
-  <p class="label" v-if="this.countryList.length > 0">Nationality</p>
+
+  <p v-if="this.countryList.length > 0" class="label">Nationality</p>
   <ul>
     <li v-for="country in countryList" :key="country.country_id">
       <CountryItem :country="country" />
@@ -19,14 +21,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import CountryItem from "../components/CountryItem.vue";
-import {
-  getAge,
-  getGender,
-  getNationality,
-  formatProbabilities,
-} from "../../utils/api";
+// TODO add types
+// TODO add caching
+import { defineComponent } from "vue";
+import CountryItem from "@/components/CountryItem.vue";
+import { getAge, getGender, getNationality } from "../../utils/api";
+import { formatProbabilities } from "../../utils/format";
+import { CountryFormatted, Gender } from "@/types";
 
 export default defineComponent({
   name: "HomeView",
@@ -34,10 +35,10 @@ export default defineComponent({
   data() {
     return {
       input: "",
-      age: 0,
-      name: "",
-      gender: "",
-      countryList: [],
+      age: 0 as number,
+      name: "" as string,
+      gender: "" as Gender,
+      countryList: [] as CountryFormatted[],
     };
   },
   methods: {
@@ -50,7 +51,7 @@ export default defineComponent({
       this.gender = gender;
     },
     async getNationality(name: string) {
-      const countryList = getNationality(name);
+      const countryList = await getNationality(name);
       const formatted = formatProbabilities(countryList);
       this.countryList = formatted;
     },
