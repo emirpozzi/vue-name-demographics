@@ -34,7 +34,7 @@ export default defineComponent({
   components: { CountryItem },
   data() {
     return {
-      input: "",
+      input: "" as string,
       age: 0 as number,
       name: "" as string,
       gender: "" as Gender,
