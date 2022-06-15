@@ -2,7 +2,7 @@
 
 This simple Vue app allows to get average age, most likely gender and most likely nationality of a person given their first name.
 
-![screenshot app](https://freeimage.host/i/hhyOAu)
+![screenshot app](https://iili.io/hhyOAu.png)
 
 Based on public APIs:
 
